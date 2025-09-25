@@ -19,16 +19,16 @@ REPO_SERVER_URL = os.environ.get("REPO_SERVER_URL", "https://qsc-dev.quasiris.de
 REQUEST_TIMEOUT = float(os.environ.get("REPO_REQUEST_TIMEOUT", "10"))
 
 
-def fetch_documents(query: str, limit: int = 20):
+def fetch_documents(query: str):
     """
     Call the fetch endpoint and return its full payload, but ensure each document
     (either in result->...->documents or payload['documents'] or top-level list)
     has a 'text' field.
     """
-    logger.info("fetch_documents called q=%r limit=%s", query, limit)
+    logger.info("fetch_documents called q=%r", query)
 
     try:
-        r = requests.get(REPO_SERVER_URL, params={"q": query, "limit": limit}, timeout=REQUEST_TIMEOUT)
+        r = requests.get(REPO_SERVER_URL, params={"q": query}, timeout=REQUEST_TIMEOUT)
         r.raise_for_status()
         payload = r.json()
     except Exception as e:
@@ -39,14 +39,14 @@ def fetch_documents(query: str, limit: int = 20):
 
 # Search MCP tool
 @mcp.tool(name="search_products_tool")
-async def search_products_tool(query: str, limit: int = 20):
+async def search_products_tool(query: str):
     """
-    Tool signature: search_products_tool(query: str, limit: int = 20)
+    Tool signature: search_products_tool(query: str)
     Returns a JSON-serializable list of documents.
     """
-    logger.info("search_products_tool called q=%r limit=%s", query, limit)
+    logger.info("search_products_tool called q=%r", query)
     try:
-        docs = fetch_documents(query, limit=limit)
+        docs = fetch_documents(query)
         return json.loads(json.dumps(docs))
     except Exception as e:
         logger.exception("search_products_tool failed: %s", e)
