@@ -38,18 +38,18 @@ def fetch_documents(query: str, limit: int = 20):
     return payload
 
 # Search MCP tool
-@mcp.tool(name="search_documents_tool")
-async def search_documents_tool(query: str, limit: int = 20):
+@mcp.tool(name="search_products_tool")
+async def search_products_tool(query: str, limit: int = 20):
     """
-    Tool signature: search_documents_tool(query: str, limit: int = 20)
+    Tool signature: search_products_tool(query: str, limit: int = 20)
     Returns a JSON-serializable list of documents.
     """
-    logger.info("search_documents_tool called q=%r limit=%s", query, limit)
+    logger.info("search_products_tool called q=%r limit=%s", query, limit)
     try:
         docs = fetch_documents(query, limit=limit)
         return json.loads(json.dumps(docs))
     except Exception as e:
-        logger.exception("search_documents_tool failed: %s", e)
+        logger.exception("search_products_tool failed: %s", e)
         return []
 
 
