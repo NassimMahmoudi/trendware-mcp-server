@@ -41,6 +41,7 @@ def fetch_documents(query: str):
 @mcp.tool(name="search_products_tool")
 async def search_products_tool(query: str):
     """
+    Searches the product catalog by keywords to find matching products with details like name, price, description, images, and links. Supports pagination.
     Tool signature: search_products_tool(query: str)
     Returns a JSON-serializable list of documents.
     """
